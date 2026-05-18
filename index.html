@@ -17,6 +17,7 @@
       <span><strong id="stat-new-members">0</strong> new members</span>
       <span class="sep">·</span>
       <span><strong id="stat-active-channels">0</strong> active channels</span>
+      <span class="topbar-id" id="topbar-id" hidden></span>
     </div>
   </header>
 
@@ -35,7 +36,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-icon">#</div>
-        <div class="stat-num" id="stat-channels">5</div>
+        <div class="stat-num" id="stat-channels">0</div>
         <div class="stat-label">Channels</div>
       </div>
       <div class="stat-card">
@@ -45,90 +46,47 @@
       </div>
     </section>
 
-    <div class="toolbar">
-      <div class="filters">
-        <button class="filter-chip filter-chip-active">All</button>
+    <!-- channel list view -->
+    <section id="view-channels">
+      <div class="toolbar">
+        <div class="filters">
+          <button class="filter-chip filter-chip-active">All</button>
+          <button class="filter-chip" id="btn-new-channel" hidden>+ new channel</button>
+        </div>
+        <a class="mark-read" href="#" id="mark-read">✓ Mark all read</a>
       </div>
-      <a class="mark-read" href="#">✓ Mark all read</a>
-    </div>
+      <div id="channels" class="channels">
+        <div class="empty" id="channels-empty">Loading channels…</div>
+      </div>
+    </section>
 
-    <section class="channels" id="channels">
+    <!-- channel detail view -->
+    <section id="view-channel" hidden>
+      <div class="channel-header">
+        <a class="back" href="#/">← back</a>
+        <h2 id="channel-title">#</h2>
+        <span class="tag tag-neutral" id="channel-tag" hidden></span>
+      </div>
+      <p class="channel-header-desc" id="channel-description"></p>
 
-      <article class="channel">
-        <div class="channel-icon">#</div>
-        <div class="channel-body">
-          <div class="channel-head">
-            <h3 class="channel-name">integration-test</h3>
-          </div>
-          <p class="channel-desc">Automated integration test channel</p>
-          <p class="channel-meta">Last active: May 7 23:52</p>
-        </div>
-        <div class="channel-side">
-          <span class="post-count">0 posts</span>
-        </div>
-      </article>
+      <div id="posts" class="posts">
+        <div class="empty" id="posts-empty">Loading…</div>
+      </div>
 
-      <article class="channel">
-        <div class="channel-icon">#</div>
-        <div class="channel-body">
-          <div class="channel-head">
-            <h3 class="channel-name">topic?</h3>
-            <span class="tag tag-neutral">dreamlab-training</span>
-          </div>
-          <p class="channel-meta">Last active: Apr 4 20:12</p>
+      <form class="composer" id="composer" hidden>
+        <textarea id="composer-text" placeholder="Write a post…" rows="3" required></textarea>
+        <div class="composer-actions">
+          <span class="composer-hint" id="composer-hint"></span>
+          <button type="submit" class="btn-primary">Post</button>
         </div>
-        <div class="channel-side">
-          <span class="post-count">0 posts</span>
-        </div>
-      </article>
-
-      <article class="channel">
-        <div class="channel-icon">#</div>
-        <div class="channel-body">
-          <div class="channel-head">
-            <h3 class="channel-name">Harter Fell Walk</h3>
-            <span class="tag tag-event">minimoonoir-events</span>
-          </div>
-          <p class="channel-desc">1st April</p>
-          <p class="channel-meta">Last active: Apr 4 19:57</p>
-        </div>
-        <div class="channel-side">
-          <span class="post-count">0 posts</span>
-        </div>
-      </article>
-
-      <article class="channel">
-        <div class="channel-icon">#</div>
-        <div class="channel-body">
-          <div class="channel-head">
-            <h3 class="channel-name">Hello World!</h3>
-            <span class="tag tag-welcome">minimoonoir-welcome</span>
-          </div>
-          <p class="channel-desc">Lorem ipsum innit</p>
-          <p class="channel-meta">Last active: Apr 3 15:05</p>
-        </div>
-        <div class="channel-side">
-          <span class="post-count">0 posts</span>
-        </div>
-      </article>
-
-      <article class="channel">
-        <div class="channel-icon">#</div>
-        <div class="channel-body">
-          <div class="channel-head">
-            <h3 class="channel-name">general</h3>
-          </div>
-          <p class="channel-desc">The catch-all channel.</p>
-          <p class="channel-meta">Last active: Apr 1 09:00</p>
-        </div>
-        <div class="channel-side">
-          <span class="post-count">0 posts</span>
-        </div>
-      </article>
-
+      </form>
+      <div class="composer-locked" id="composer-locked" hidden>
+        Log in (bottom-right) to post.
+      </div>
     </section>
 
   </main>
 
+  <script src="app.js"></script>
 </body>
 </html>
