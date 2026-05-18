@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>forum</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/xlogin"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="dot dot-active"></span>
+      <span><strong id="stat-messages-top">0</strong> messages</span>
+      <span class="sep">·</span>
+      <span><strong id="stat-new-members">0</strong> new members</span>
+      <span class="sep">·</span>
+      <span><strong id="stat-active-channels">0</strong> active channels</span>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="stats">
+      <div class="stat-card">
+        <div class="stat-icon">💬</div>
+        <div class="stat-num" id="stat-messages">0</div>
+        <div class="stat-label">Messages</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-num" id="stat-members">0</div>
+        <div class="stat-label">Members</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">#</div>
+        <div class="stat-num" id="stat-channels">5</div>
+        <div class="stat-label">Channels</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-online">●</div>
+        <div class="stat-num" id="stat-online">0</div>
+        <div class="stat-label">Online</div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="filters">
+        <button class="filter-chip filter-chip-active">All</button>
+      </div>
+      <a class="mark-read" href="#">✓ Mark all read</a>
+    </div>
+
+    <section class="channels" id="channels">
+
+      <article class="channel">
+        <div class="channel-icon">#</div>
+        <div class="channel-body">
+          <div class="channel-head">
+            <h3 class="channel-name">integration-test</h3>
+          </div>
+          <p class="channel-desc">Automated integration test channel</p>
+          <p class="channel-meta">Last active: May 7 23:52</p>
+        </div>
+        <div class="channel-side">
+          <span class="post-count">0 posts</span>
+        </div>
+      </article>
+
+      <article class="channel">
+        <div class="channel-icon">#</div>
+        <div class="channel-body">
+          <div class="channel-head">
+            <h3 class="channel-name">topic?</h3>
+            <span class="tag tag-neutral">dreamlab-training</span>
+          </div>
+          <p class="channel-meta">Last active: Apr 4 20:12</p>
+        </div>
+        <div class="channel-side">
+          <span class="post-count">0 posts</span>
+        </div>
+      </article>
+
+      <article class="channel">
+        <div class="channel-icon">#</div>
+        <div class="channel-body">
+          <div class="channel-head">
+            <h3 class="channel-name">Harter Fell Walk</h3>
+            <span class="tag tag-event">minimoonoir-events</span>
+          </div>
+          <p class="channel-desc">1st April</p>
+          <p class="channel-meta">Last active: Apr 4 19:57</p>
+        </div>
+        <div class="channel-side">
+          <span class="post-count">0 posts</span>
+        </div>
+      </article>
+
+      <article class="channel">
+        <div class="channel-icon">#</div>
+        <div class="channel-body">
+          <div class="channel-head">
+            <h3 class="channel-name">Hello World!</h3>
+            <span class="tag tag-welcome">minimoonoir-welcome</span>
+          </div>
+          <p class="channel-desc">Lorem ipsum innit</p>
+          <p class="channel-meta">Last active: Apr 3 15:05</p>
+        </div>
+        <div class="channel-side">
+          <span class="post-count">0 posts</span>
+        </div>
+      </article>
+
+      <article class="channel">
+        <div class="channel-icon">#</div>
+        <div class="channel-body">
+          <div class="channel-head">
+            <h3 class="channel-name">general</h3>
+          </div>
+          <p class="channel-desc">The catch-all channel.</p>
+          <p class="channel-meta">Last active: Apr 1 09:00</p>
+        </div>
+        <div class="channel-side">
+          <span class="post-count">0 posts</span>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
