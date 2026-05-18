@@ -6,6 +6,7 @@
 
 const FORUM_BASE = `${location.origin}/public/forum/`
 const INDEX_URL = `${FORUM_BASE}index.jsonld`
+const ACL_URL = `${FORUM_BASE}.acl`
 const CHANNELS_BASE = `${FORUM_BASE}channels/`
 
 const DEFAULT_INDEX = {
@@ -16,6 +17,50 @@ const DEFAULT_INDEX = {
   'forum:channels': [
     { '@id': '#general', 'schema:name': 'general', 'schema:description': 'The catch-all channel.' }
   ]
+}
+
+function ownerAclId(identity) {
+  if (identity.type === 'nostr') return `did:nostr:${identity.id}`
+  return identity.id
+}
+
+function forumAcl(ownerId) {
+  return {
+    '@context': {
+      acl: 'http://www.w3.org/ns/auth/acl#',
+      foaf: 'http://xmlns.com/foaf/0.1/'
+    },
+    '@graph': [
+      {
+        '@id': '#owner',
+        '@type': 'acl:Authorization',
+        'acl:agent': { '@id': ownerId },
+        'acl:accessTo': { '@id': './' },
+        'acl:default': { '@id': './' },
+        'acl:mode': [
+          { '@id': 'acl:Read' }, { '@id': 'acl:Write' }, { '@id': 'acl:Control' }
+        ]
+      },
+      {
+        '@id': '#authenticated',
+        '@type': 'acl:Authorization',
+        'acl:agentClass': { '@id': 'acl:AuthenticatedAgent' },
+        'acl:accessTo': { '@id': './' },
+        'acl:default': { '@id': './' },
+        'acl:mode': [
+          { '@id': 'acl:Read' }, { '@id': 'acl:Write' }, { '@id': 'acl:Append' }
+        ]
+      },
+      {
+        '@id': '#public',
+        '@type': 'acl:Authorization',
+        'acl:agentClass': { '@id': 'foaf:Agent' },
+        'acl:accessTo': { '@id': './' },
+        'acl:default': { '@id': './' },
+        'acl:mode': [{ '@id': 'acl:Read' }]
+      }
+    ]
+  }
 }
 
 const state = {
@@ -52,7 +97,21 @@ async function loadIndex() {
   return res.json()
 }
 
+async function seedAcl(identity) {
+  const body = forumAcl(ownerAclId(identity))
+  const res = await authFetch(ACL_URL, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/ld+json' },
+    body: JSON.stringify(body)
+  })
+  if (!res.ok) throw new Error(`seed ACL PUT → ${res.status}`)
+}
+
 async function seedIndex() {
+  const identity = currentIdentity()
+  if (!identity) throw new Error('not logged in')
+  // ACL first so multi-user write inherits down
+  await seedAcl(identity)
   const res = await authFetch(INDEX_URL, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/ld+json' },
@@ -336,17 +395,17 @@ document.getElementById('composer').addEventListener('submit', async e => {
 })
 
 document.getElementById('btn-new-channel').addEventListener('click', async () => {
-  const name = prompt('Channel name (e.g. "ideas")')
-  if (!name) return
-  const clean = name.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '')
-  if (!clean) return alert('Invalid name')
-  if (state.channels.some(c => c.name === clean)) return alert('Channel already exists')
-  const desc = prompt(`Description for #${clean} (optional)`) || ''
-  const doc = await loadIndex() || JSON.parse(JSON.stringify(DEFAULT_INDEX))
-  const list = doc['forum:channels'] || doc.channels || []
-  list.push({ '@id': `#${clean}`, 'schema:name': clean, 'schema:description': desc })
-  doc['forum:channels'] = list
   try {
+    const name = prompt('Channel name (e.g. "ideas")')
+    if (!name) return
+    const clean = name.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '')
+    if (!clean) return alert('Invalid name')
+    if (state.channels.some(c => c.name === clean)) return alert('Channel already exists')
+    const desc = prompt(`Description for #${clean} (optional)`) || ''
+    const doc = await loadIndex() || JSON.parse(JSON.stringify(DEFAULT_INDEX))
+    const list = doc['forum:channels'] || doc.channels || []
+    list.push({ '@id': `#${clean}`, 'schema:name': clean, 'schema:description': desc })
+    doc['forum:channels'] = list
     await saveIndex(doc)
     state.channels = channelsFrom(doc)
     renderChannelList()
